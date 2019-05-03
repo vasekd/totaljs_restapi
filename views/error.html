@@ -1,0 +1,22 @@
+<div class="header">
+	<div class="title">
+		<span class="project">@{'%name'}</span>
+		<span class="method">@{model.method}</span>
+		<span class="path">@{model.url}</span>
+	</div>
+	<ul class="root">
+		<li><a href="@{model.root}">Rest::Root</a></li>
+	</ul>
+</div>
+<div class="row">
+	<div class="col-lg-12"> 			
+		@{model.status}
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-12"> 			
+		<pre class="prettyprint lang-yaml pre-wrap">
+@{model.data}
+		</pre>
+	</div>
+</div>

@@ -1,0 +1,289 @@
+@{section style}
+/* bootstrap-3.3.2-dist */
+.row {
+  margin: 10px 0px 0px 0px;
+}
+
+.form-control {
+	margin-bottom: 4px;
+}
+
+/* Header styles */
+.header {
+  background-color: #eee;
+  display: inline-block;
+  width: 100%;
+  min-height: 38px;
+  padding: 6px 0px 5px 0px;
+  border: 1px solid #ddd
+}
+
+/* Header title style */
+.header .title {
+  margin: 9px;
+  display:inline;  
+  text-decoration: none;
+  color: #aaa;
+  font-size: 24px;
+}
+
+.title > span {
+  padding-right: 10px;
+}
+
+.title .project {
+  color: #ccc;
+}
+
+/* Format styles */
+.format {
+  float:right;
+  list-style-type: none;
+  margin: 5px 10px 0px 0px;
+  padding: 0px;
+}
+
+.format li {
+  float:left;
+  border-right: 1px solid #fff;
+  padding: 0px 7px 0px 7px;
+}
+
+.format li:last-child {
+  border-right: none;
+}
+
+.format li a {
+  margin-top: 1px;
+  text-decoration: none;
+  color: #ccc;
+  text-transform: uppercase;
+ 
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+ 
+.format li a:hover {
+  color: #666;
+}
+ 
+.format li.active a {
+  font-weight: bold;
+  color: #333;
+}
+
+/* Root styles */
+.root {
+  float:right;
+  list-style-type: none;
+  margin: 5px 10px 0px 0px;
+  padding: 0px;
+}
+
+.root li {
+  float:left;
+  border-right: 1px solid #fff;
+  padding: 0px 7px 0px 7px;
+}
+
+.root li:last-child {
+  border-right: none;
+}
+
+.root li a {
+  margin-top: 1px;
+  text-decoration: none;
+  color: #666;
+ 
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+ 
+.root li a:hover {
+  color: #333;
+}
+ 
+.root li.active a {
+  font-weight: bold;
+  color: #333;
+}
+
+/* Links ul */
+.links {
+  list-style-type: none;
+  margin: 5px 0px 0px 10px;
+  padding: 0px;
+  font: 14px/1 Helvetica, Verdana, sans-serif;
+}
+
+.links li {
+  padding-bottom: 1px;
+}
+
+.links li a {
+  margin-top: 1px;
+  text-decoration: none;
+  color: #23527c;
+ 
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+ 
+.links li a:hover {
+  color: #666;
+}
+ 
+.links li.active a {
+  font-weight: bold;
+  color: #333;
+}
+
+.method-form {
+  margin: 7px 0px 5px 0px;
+}
+
+.links span {
+  color: #aaa;
+}
+
+/* pretty print */
+pre.prettyprint {
+	padding: 10px;
+	max-height: 500px;
+  border: 1px solid #ccc;
+}
+
+.kwd {
+  color: #23527c;
+}
+
+a {
+  color: #23527c;
+}
+
+.pre-wrap  {
+	white-space: pre-wrap;       /* css-3 */
+	white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+	white-space: -pre-wrap;      /* Opera 4-6 */
+	white-space: -o-pre-wrap;    /* Opera 7 */
+	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+.footer {
+	margin-top: 10px;
+	width: 100%;
+	background-color: #FFFFFF;
+}
+@{end}	
+
+@{section js}
+$('#myTab a').click(function (e) {
+	e.preventDefault();
+	$(this).tab('show');
+});
+function sendMethod(methodType,url,jsvar){
+	var selected = $( "select[name*='enctype'] option:selected" ).val();
+	var enctype = typeof selected == 'undefined'?'application/json':'application/x-www-form-urlencoded';
+	$.ajax({
+		type: methodType,
+		url: url,
+		headers: {          
+				Accept : 'application/json; charset=utf-8',         
+			'Content-Type': enctype + '; charset=utf-8'   
+		},
+		success: function(data) {
+			alert('Success'); 
+			window.location.href=url;
+		},
+		error: function(data) {
+			alert(data.responseText);
+		},
+		data: jsvar
+	});return false;
+}
+@{end}
+
+<div class="header">
+	<div class="title">
+		<span class="project">@{'%name'}</span>
+		<span class="method">@{model.method}</span>
+		<span class="path">@{model.url}</span>
+	</div>
+	<ul class="root">
+		<li><a href="@{model.root}">Rest::Root</a></li>
+	</ul>
+</div>
+
+@{foreach v in model.htmlviz}
+	<div>@{view(v.value, model)}</div>
+@{end} 			
+
+<div class="row">
+	<div class="col-lg-3"> 			
+		<ul class="links">
+			@{foreach link in model.links}
+				<li><a href="@{link.href}" rel="@{link.rel}">@{link.label}</a></li>
+			@{end}				
+		</ul>
+	</div>
+	<div class="col-lg-6">
+		<pre class="prettyprint lang-yaml pre-wrap">@{model.data}</pre>
+		<div class="row align-right text-muted duration"> <small>Duration: @{model.duration}</small></div>  
+	</div>
+	<div class="col-lg-3" role="tabpanel">
+
+		<!-- Nav tabs-->
+		<ul id="myTab" class="nav nav-tabs nav-justified" role="tablist">
+			<li role="presentation" class="active"><a role="tab" href="#get" data-toggle="tab">GET</a></li>
+			<li role="presentation" ><a role="tab" href="#post" data-toggle="tab">POST</a></li>
+			<li role="presentation" ><a role="tab" href="#put" data-toggle="tab">PUT</a></li>
+			<li role="presentation" ><a role="tab" href="#delete" data-toggle="tab">DELETE</a></li>			<!-- Tab panes -->
+		<div class="tab-content" id="myTabContent">
+			<div role="tabpanel" class="tab-pane fade  in active" id="get">
+				<form class="method-form" method="GET">
+					<label class="col-lg-4 control-label">Get as</label> 
+					<select name="format" class="form-control">
+						<option>text/yaml</option>
+						<option>application/json</option>
+					</select>
+					<button type="submit" class="btn btn-default">Get</button>
+				</form>
+			</div>
+			<div role="tabpanel" class="tab-pane fade" id="post">
+				<form class="method-form" method="POST">
+					<textarea class="form-control" name="DATA" rows="20" cols="3">@{model.data}</textarea>
+					<label class="col-lg-4 control-label">Get as</label> 
+					<select name="format" class="form-control">
+						<option selected="selected">text/yaml</option>
+						<option>application/json</option>
+					</select>
+					<label class="col-lg-4 control-label">Post as</label> 
+					<select name="enctype" class="form-control">
+						<option selected="selected">text/yaml</option>
+						<option>application/json</option>
+					</select>
+					<button type="submit" class="btn btn-default">Post</button>
+				</form>
+			</div>
+			<div role="tabpanel" class="tab-pane fade" id="put">
+				<form class="method-form" onSubmit="sendMethod('PUT','/api/v1',$(this).serialize());">
+					<div class="text-center"> Not allowed </div>
+				</form>
+			</div>
+			<div role="tabpanel" class="tab-pane fade" id="delete">
+				<form class="method-form" onSubmit="sendMethod('DELETE','/api/v1',$(this).serialize());">
+					<div class="text-center"> Not allowed </div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
