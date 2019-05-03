@@ -10,7 +10,7 @@ Create html visualiser for total.js web API. As I call it "grey pages".
 
 - `cd <your totaljs project>`
 - create bundles directory `mkdir bundles`
-- create bundle config `echo https://github.com/vasekd/totaljs_restapi/raw/master/restapi.bundle > ./bundles/restapi.bundle`
+- create bundle config `echo https://github.com/vasekd/totaljs_restapi/raw/master/restapi.bundle > ./bundles/restapi.url`
 
 ## Usage
 
